@@ -48,17 +48,15 @@ struct PuzzleView: View {
             }
             .navigationTitle(showingPuzzleSelection ? "Select Puzzle" : (viewModel.currentPuzzle?.title ?? "Puzzle"))
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                if !showingPuzzleSelection && !viewModel.isPuzzleCompleted {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button("Exit") {
-                            viewModel.resetPuzzle()
-                            showingPuzzleSelection = true
-                        }
-                        .foregroundColor(.white)
-                    }
+            .navigationBarBackButtonHidden(!showingPuzzleSelection && !viewModel.isPuzzleCompleted)
+            .navigationBarItems(
+                trailing: !showingPuzzleSelection && !viewModel.isPuzzleCompleted ?
+                Button("Exit") {
+                    viewModel.resetPuzzle()
+                    showingPuzzleSelection = true
                 }
-            }
+                .foregroundColor(.white) : nil
+            )
         }
     }
 }
@@ -80,7 +78,7 @@ struct PuzzleSelectionView: View {
                                     .foregroundColor(Color("ButtonColor"))
                                 Text(type.rawValue)
                                     .font(.headline)
-                                    .fontWeight(.semibold)
+                                    .font(.headline.weight(.semibold))
                                     .foregroundColor(.white)
                                 Spacer()
                             }
@@ -121,7 +119,7 @@ struct PuzzleCard: View {
                     
                     Text(puzzle.difficulty.rawValue)
                         .font(.caption)
-                        .fontWeight(.medium)
+                        .font(.body.weight(.medium))
                         .foregroundColor(.white)
                         .padding(.horizontal, 8)
                         .padding(.vertical, 4)
@@ -131,7 +129,7 @@ struct PuzzleCard: View {
                 
                 Text(puzzle.title)
                     .font(.headline)
-                    .fontWeight(.semibold)
+                    .font(.title2.weight(.semibold))
                     .foregroundColor(.white)
                     .multilineTextAlignment(.leading)
                 
@@ -204,7 +202,7 @@ struct PuzzleGameView: View {
                     if viewModel.isTimerActive {
                         Text(viewModel.timeRemainingFormatted)
                             .font(.headline)
-                            .fontWeight(.semibold)
+                            .font(.headline.weight(.semibold))
                             .foregroundColor(viewModel.timeRemaining < 30 ? .red : .white)
                     }
                 }
@@ -291,7 +289,7 @@ struct PuzzleGameView: View {
                     viewModel.submitAnswer()
                 }
                 .foregroundColor(.black)
-                .fontWeight(.semibold)
+                .font(.body.weight(.semibold))
                 .padding(.horizontal, 30)
                 .padding(.vertical, 12)
                 .background(Color("ButtonColor"))
@@ -361,7 +359,7 @@ struct WordScrambleView: View {
                         viewModel.addLetter(letter)
                     }
                     .font(.title2)
-                    .fontWeight(.semibold)
+                    .font(.title2.weight(.semibold))
                     .foregroundColor(.black)
                     .frame(width: 50, height: 50)
                     .background(Color("ButtonColor"))
@@ -396,7 +394,7 @@ struct WordScrambleView: View {
                         viewModel.submitAnswer()
                     }
                     .foregroundColor(.black)
-                    .fontWeight(.semibold)
+                    .font(.title2.weight(.semibold))
                     .padding(.horizontal, 20)
                     .padding(.vertical, 10)
                     .background(Color("ButtonColor"))
@@ -578,7 +576,7 @@ struct PuzzleResultView: View {
                     VStack(spacing: 15) {
                         Text("Puzzle Statistics")
                             .font(.headline)
-                            .fontWeight(.semibold)
+                            .font(.headline.weight(.semibold))
                             .foregroundColor(.white)
                         
                         VStack(spacing: 12) {
@@ -604,7 +602,7 @@ struct PuzzleResultView: View {
                         onTryAgain()
                     }
                     .foregroundColor(.black)
-                    .fontWeight(.semibold)
+                    .font(.title2.weight(.semibold))
                     .padding(.horizontal, 40)
                     .padding(.vertical, 12)
                     .background(Color("ButtonColor"))
@@ -614,7 +612,7 @@ struct PuzzleResultView: View {
                         onSelectNewPuzzle()
                     }
                     .foregroundColor(.white)
-                    .fontWeight(.medium)
+                    .font(.body.weight(.medium))
                     .padding(.horizontal, 30)
                     .padding(.vertical, 10)
                     .background(Color.white.opacity(0.2))
@@ -655,4 +653,5 @@ struct PuzzleResultView: View {
 #Preview {
     PuzzleView()
 }
+
 

@@ -97,7 +97,6 @@ struct DailyView: View {
                                 quizService.generateDailyChallenge()
                             }
                             .foregroundColor(.black)
-                            .fontWeight(.semibold)
                             .padding(.horizontal, 30)
                             .padding(.vertical, 12)
                             .background(Color("ButtonColor"))

@@ -327,7 +327,7 @@ struct SettingsToggle: View {
             Toggle("", isOn: $isOn)
                 .labelsHidden()
                 .tint(Color("ButtonColor"))
-                .onChange(of: isOn) {
+                .onChange(of: isOn) { _ in
                     action?()
                 }
         }

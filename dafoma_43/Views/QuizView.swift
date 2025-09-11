@@ -48,17 +48,15 @@ struct QuizView: View {
             }
             .navigationTitle(showingQuizSelection ? "Select Quiz" : (viewModel.currentQuiz?.title ?? "Quiz"))
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                if !showingQuizSelection && !viewModel.isQuizCompleted {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button("Exit") {
-                            viewModel.resetQuiz()
-                            showingQuizSelection = true
-                        }
-                        .foregroundColor(.white)
-                    }
+            .navigationBarBackButtonHidden(!showingQuizSelection && !viewModel.isQuizCompleted)
+            .navigationBarItems(
+                trailing: !showingQuizSelection && !viewModel.isQuizCompleted ?
+                Button("Exit") {
+                    viewModel.resetQuiz()
+                    showingQuizSelection = true
                 }
-            }
+                .foregroundColor(.white) : nil
+            )
         }
     }
 }
@@ -80,7 +78,7 @@ struct QuizSelectionView: View {
                                     .foregroundColor(Color("ButtonColor"))
                                 Text(category.rawValue)
                                     .font(.headline)
-                                    .fontWeight(.semibold)
+                                    .font(.headline.weight(.semibold))
                                     .foregroundColor(.white)
                                 Spacer()
                             }
@@ -121,7 +119,7 @@ struct QuizCard: View {
                     
                     Text(quiz.difficulty.rawValue)
                         .font(.caption)
-                        .fontWeight(.medium)
+                        .font(.body.weight(.medium))
                         .foregroundColor(.white)
                         .padding(.horizontal, 8)
                         .padding(.vertical, 4)
@@ -131,7 +129,7 @@ struct QuizCard: View {
                 
                 Text(quiz.title)
                     .font(.headline)
-                    .fontWeight(.semibold)
+                    .font(.headline.weight(.semibold))
                     .foregroundColor(.white)
                     .multilineTextAlignment(.leading)
                 
@@ -195,7 +193,7 @@ struct QuizQuestionView: View {
                     
                     Text(viewModel.timeRemainingFormatted)
                         .font(.headline)
-                        .fontWeight(.semibold)
+                        .font(.headline.weight(.semibold))
                         .foregroundColor(viewModel.timeRemaining < 30 ? .red : .white)
                 }
                 
@@ -212,7 +210,7 @@ struct QuizQuestionView: View {
                     if let question = viewModel.currentQuestion {
                         Text(question.question)
                             .font(.title2)
-                            .fontWeight(.semibold)
+                            .font(.headline.weight(.semibold))
                             .foregroundColor(.white)
                             .multilineTextAlignment(.center)
                             .padding()
@@ -265,7 +263,7 @@ struct QuizQuestionView: View {
                     viewModel.submitAnswer()
                 }
                 .foregroundColor(.black)
-                .fontWeight(.semibold)
+                        .font(.headline.weight(.semibold))
                 .padding(.horizontal, 30)
                 .padding(.vertical, 12)
                 .background(Color("ButtonColor"))
@@ -363,7 +361,7 @@ struct QuizResultView: View {
                     
                     Text(resultTitle)
                         .font(.largeTitle)
-                        .fontWeight(.bold)
+                        .font(.largeTitle.weight(.bold))
                         .foregroundColor(.white)
                     
                     Text(resultMessage)
@@ -380,7 +378,7 @@ struct QuizResultView: View {
                     VStack(spacing: 15) {
                         Text("Quiz Statistics")
                             .font(.headline)
-                            .fontWeight(.semibold)
+                            .font(.headline.weight(.semibold))
                             .foregroundColor(.white)
                         
                         VStack(spacing: 12) {
@@ -403,7 +401,7 @@ struct QuizResultView: View {
                         onRestartQuiz()
                     }
                     .foregroundColor(.black)
-                    .fontWeight(.semibold)
+                    .font(.headline.weight(.semibold))
                     .padding(.horizontal, 40)
                     .padding(.vertical, 12)
                     .background(Color("ButtonColor"))
@@ -413,7 +411,7 @@ struct QuizResultView: View {
                         onSelectNewQuiz()
                     }
                     .foregroundColor(.white)
-                    .fontWeight(.medium)
+                    .font(.body.weight(.medium))
                     .padding(.horizontal, 30)
                     .padding(.vertical, 10)
                     .background(Color.white.opacity(0.2))
@@ -481,7 +479,7 @@ struct StatRow: View {
                 .foregroundColor(.white.opacity(0.8))
             Spacer()
             Text(value)
-                .fontWeight(.medium)
+                .font(.body.weight(.medium))
                 .foregroundColor(.white)
         }
     }
@@ -490,4 +488,5 @@ struct StatRow: View {
 #Preview {
     QuizView()
 }
+
 

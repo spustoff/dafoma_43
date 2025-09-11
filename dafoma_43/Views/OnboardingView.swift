@@ -111,7 +111,6 @@ struct OnboardingView: View {
                             }
                         }
                         .foregroundColor(.black)
-                        .fontWeight(.semibold)
                         .padding(.horizontal, 30)
                         .padding(.vertical, 12)
                         .background(Color("ButtonColor"))
@@ -178,7 +177,6 @@ struct OnboardingPageView: View {
                     showDemo = true
                 }
                 .foregroundColor(.white)
-                .fontWeight(.medium)
                 .padding(.horizontal, 20)
                 .padding(.vertical, 10)
                 .background(page.color.opacity(0.3))
@@ -277,7 +275,6 @@ struct QuizDemoView: View {
                         dismiss()
                     }
                     .foregroundColor(.black)
-                    .fontWeight(.semibold)
                     .padding(.horizontal, 30)
                     .padding(.vertical, 12)
                     .background(Color("ButtonColor"))
@@ -348,7 +345,6 @@ struct PuzzleDemoView: View {
                                 }
                             }
                             .font(.title2)
-                            .fontWeight(.semibold)
                             .foregroundColor(.black)
                             .frame(width: 50, height: 50)
                             .background(Color("ButtonColor"))
@@ -385,7 +381,6 @@ struct PuzzleDemoView: View {
                         dismiss()
                     }
                     .foregroundColor(.black)
-                    .fontWeight(.semibold)
                     .padding(.horizontal, 30)
                     .padding(.vertical, 12)
                     .background(Color("ButtonColor"))
@@ -403,4 +398,5 @@ struct PuzzleDemoView: View {
 #Preview {
     OnboardingView()
 }
+
 
